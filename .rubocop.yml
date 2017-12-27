@@ -1,0 +1,52 @@
+# Offense count: 1
+Metrics/AbcSize:
+  Max: 120
+
+# Offense count: 1
+# Configuration parameters: CountComments, ExcludedMethods.
+Metrics/BlockLength:
+  Max: 42
+
+# Offense count: 1
+Metrics/CyclomaticComplexity:
+  Max: 42
+
+# Offense count: 1
+# Configuration parameters: CountComments.
+Metrics/MethodLength:
+  Max: 100
+
+# Offense count: 1
+Metrics/PerceivedComplexity:
+  Max: 42
+
+# Offense count: 1
+Security/Eval:
+  Exclude:
+    - 'lib/vj.rb'
+
+# Offense count: 1
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'lib/vj.rb'
+
+# Offense count: 7
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: annotated, template, unannotated
+Style/FormatStringToken:
+  Exclude:
+    - 'lib/vj.rb'
+
+# Offense count: 2
+# Configuration parameters: AllowedVariables.
+Style/GlobalVars:
+  Exclude:
+    - 'lib/vj.rb'
+
+# Offense count: 5
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 200
