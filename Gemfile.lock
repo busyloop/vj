@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    vj (1.0.0)
+    vj (1.0.1)
       oj
       optix
       paint
