@@ -53,41 +53,45 @@ module Vj
       end
       suppress_keys = Set.new(opts[:suppress])
       hash = nil
-      STDIN.each do |line|
-        line.chomp!
-        next if line == ''
-        begin
-          hash = Oj.load(line)
-          next if hash.nil?
-        rescue StandardError => e
-          hash = Marshal.load(Marshal.dump(base_json))
-          hash[base_json_line_key] = line
-        end
+      begin
+        STDIN.each do |line|
+          line.chomp!
+          next if line == ''
+          begin
+            hash = Oj.load(line)
+            next if hash.nil?
+          rescue StandardError => e
+            hash = Marshal.load(Marshal.dump(base_json))
+            hash[base_json_line_key] = line
+          end
 
-        if opts[:jsonify]
-          puts Oj.dump(hash)
-          next
-        end
+          if opts[:jsonify]
+            puts Oj.dump(hash)
+            next
+          end
 
-        color = nil
-        if hash[opts[:color_key]]
-          color = palette[Digest::MD5.hexdigest(hash[opts[:color_key]].to_s).to_i(16) % palette.length]
-          print Paint[" #{hash[opts[:color_key]]} ", color, :inverse] + ' '
-          hash.delete(opts[:color_key])
-        end
+          color = nil
+          if hash[opts[:color_key]]
+            color = palette[Digest::MD5.hexdigest(hash[opts[:color_key]].to_s).to_i(16) % palette.length]
+            print Paint[" #{hash[opts[:color_key]]} ", color, :inverse] + ' '
+            hash.delete(opts[:color_key])
+          end
 
-        keys = hash.keys.sort
-        opts[:prioritize].reverse.each do |pkey|
-          keys.unshift(keys.delete(pkey)) if keys.include? pkey
-        end
+          keys = hash.keys.sort
+          opts[:prioritize].reverse.each do |pkey|
+            keys.unshift(keys.delete(pkey)) if keys.include? pkey
+          end
 
-        keys.each do |k|
-          next if suppress_keys.include?(k)
-          v = hash[k]
-          next if v.nil? || v == ''
-          print Paint[eval(format('"%s"', format(opts[:template], key: k, value: v).tr('"', "\001"))).tr("\001", '"'), color]
+          keys.each do |k|
+            next if suppress_keys.include?(k)
+            v = hash[k]
+            next if v.nil? || v == ''
+            print Paint[eval(format('"%s"', format(opts[:template], key: k, value: v).tr('"', "\001"))).tr("\001", '"'), color]
+          end
+          puts
         end
-        puts
+      rescue Interrupt
+        exit 130
       end
     end
 
