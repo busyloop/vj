@@ -59,6 +59,7 @@ module Vj
           next if line == ''
           begin
             hash = Oj.load(line)
+            raise 'not_a_hash' unless hash.is_a? Hash
             next if hash.nil?
           rescue StandardError => e
             hash = Marshal.load(Marshal.dump(base_json))
